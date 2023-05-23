@@ -1,17 +1,19 @@
 <template>
 <div>
     <v-list lines="two">
-      <Contact 
-        v-for="contact in contacts"
+      <template v-for="contact in contacts" :key="contact.id">
+        <Contact 
         :email="contact.email"
         :first-name="contact.firstName"
         :last-name="contact.lastName"
         :number="contact.number"
         :id="contact.id"
-        :key="contact.id"
         :tags="contact.tags"
         :photo="contact.photo"
-        />
+        >
+      </Contact>
+      </template>
+
     </v-list>
 </div>
 </template>

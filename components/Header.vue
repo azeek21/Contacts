@@ -5,9 +5,9 @@
 </script>
 
 <template>
-<v-app-bar scroll-behavior="hide">
+  <v-app-bar class="cuss" app scroll-behavior="elevate" location="top">
     <v-app-bar-nav-icon icon="mdi-menu" @click="changeDrawer"/>
-    <v-app-bar-title> Contacts </v-app-bar-title>
+    <v-app-bar-title> Contacts | NOTE: actively under development </v-app-bar-title>
     <v-text-field
       label="Search"
       hide-details

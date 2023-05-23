@@ -1,5 +1,5 @@
 <template>
-<v-list-item :value="id">
+<v-list-item :value="id" variant="elevated">
     <template v-slot:prepend>
         <v-avatar color="green" :image="photo">
             {{ firstName![0] }} {{ lastName![0] }}
@@ -35,6 +35,8 @@
 </template>
 
 <script setup lang="ts">
+import { Tcontact } from '~/types';
+
     const props = defineProps({
         firstName: String, 
         lastName: String, 

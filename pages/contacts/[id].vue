@@ -1,29 +1,49 @@
-<template class="x">
+<template>
         <v-sheet class="w-screen h-100">
+    <v-skeleton-loader
+        v-if="contact == null"
+        class="ma-auto mt-10"
+        max-width="800"
+        type="avatar, divider, heading, divider, heading, divider, heading, divider, heading, divider, heading,divider, heading, actions"
+        >
+        </v-skeleton-loader>
 
-        <v-form class="ma-auto pa-4" style="max-width: 800px;" validate-on="input">
 
+        <client-only>
+        <v-form v-if="contact" class="ma-auto pa-4" style="max-width: 800px;" validate-on="input">
             <v-container class="my-3">
                 <v-row class="justify-center mb-4" >
-                    <v-avatar color="green" size="100" :image="contact?.photo">
+            <v-avatar color="green-darken-3" size="100" :image="contact?.photo" @click="isPfpSelectOpen = true">
+                {{ contact.firstName[0] }}{{ contact.lastName[0] }}
             </v-avatar>
-                </v-row>
-                <v-row class="d-flex justify-center">
-                    <v-col class="d-flex justify-end">
-                        <v-btn prepend-icon="mdi-upload" rounded="lg">
-                            New
-                        </v-btn>
-                    </v-col>
-                    <v-col>
-                        <v-btn rounded="lg">
-                            Delete
-                            <template v-slot:prepend>
-                                <v-icon color="red">
-                                    mdi-delete
-                                </v-icon>
-                            </template>
-                        </v-btn>
-                    </v-col>
+            <v-dialog
+            max-width="800" 
+            v-model="isPfpSelectOpen"
+            >
+            <v-card
+            class="pa-10"
+            variant="elevated"
+
+            >
+                <v-text-field
+                v-model="pfpUrl"
+            label="Picture Url"
+            type="url"
+            placeholder="Only urls supported for now"
+            hint="Desn't support file uploads yet. Plase paste image url"
+            >
+            </v-text-field>
+            <v-card-actions>
+                <v-btn class="ml-auto" variant="outlined" @click="isPfpSelectOpen = false">
+                    Cancel
+                </v-btn>
+                <v-btn class="" color="green" variant="outlined" @click="setPfp">
+                    Save
+                </v-btn>
+            </v-card-actions>
+        </v-card>                
+
+            </v-dialog>
                 </v-row>
             </v-container>
 
@@ -65,7 +85,11 @@
         <v-container>
             <v-row>
                 <v-col> 
-                    <v-btn class="w-100" block>
+                    <v-btn
+                        class="w-100"
+                        block
+                        @click="deleteAndExit"
+                        >
                         <template v-slot:prepend>
                                 <v-icon color="red">
                                     mdi-delete
@@ -75,11 +99,19 @@
                     </v-btn>
                 </v-col>
                 <v-col>
-                    <v-btn block class="w-100" prepend-icon="mdi-content-save">Save</v-btn>
+                    <v-btn
+                        block
+                        class="w-100"
+                        prepend-icon="mdi-content-save"
+                        @click="saveContact"
+                        >
+                        Save
+                    </v-btn>
                 </v-col>
             </v-row>
         </v-container>
     </v-form>
+    </client-only>
 
     <v-dialog
       v-model="isDialogOpen"
@@ -91,11 +123,11 @@
     <v-card-actions>
         <v-spacer></v-spacer>
 
-        <v-btn variant="text" color="red" @click="() => {deleteAndExit = true; isDialogOpen = false}">
+        <v-btn variant="text" color="red" @click="deleteAndExit">
             Delete and exit
         </v-btn>
         
-        <v-btn variant="text" color="green" @click="() => {deleteAndExit = false; isDialogOpen = false}">
+        <v-btn variant="text" color="green" @click="isDialogOpen = false">
             Contineu Editing
          </v-btn>
 
@@ -104,55 +136,81 @@
 
     </v-card>
     </v-dialog>
+    <v-snackbar
+      v-model="isSnackbarOpen"
+      :timeout="1000"
+    >
+    {{ snackbarMessage }}
+    </v-snackbar>
 </v-sheet>
+
 </template>
 
 <script setup lang="ts">
-
-const allTags = ref(['family', 'friends', 'dogs'])
-let tmp = useRoute().params.id;
-let id = ref(0);
+import { Tcontact } from '~/types';
+import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
+const router = useRouter();
+const route = useRoute()
+const id = Number(route.params.id!);
+const contact = ref<Tcontact | null>(null);
+console.log('contact: ', contact.value);
 const isDialogOpen = ref(false);
-const deleteAndExit = ref(false);
+const isSnackbarOpen = ref(false);
+const snackbarMessage = ref('Hii')
+const isPfpSelectOpen = ref(false);
+const pfpUrl = ref('');
 
-if (typeof tmp == "string") {
-   id.value = Number(tmp);
-} else if ( typeof tmp == "object") {
-    if (tmp.length > 0) {
-        id.value = Number(tmp[0]);
+onBeforeMount(() => {
+    console.log('before mount ...')
+    contact.value = getContact(id);
+})
+
+const deleteAndExit = () => {
+    snackbarMessage.value = 'Contact deleted, leaving ...'
+    isSnackbarOpen.value = true;
+    removeGuard();
+    stopAutoSave();
+    isDialogOpen.value = false;
+    deleteContact(id);
+
+    setTimeout(() => {
+        router.replace('/');
+    }, 1000);
+}
+
+const saveContact = () => {
+    if (validateContact(contact.value)) {
+        updateContact(contact.value)
+        snackbarMessage.value = 'Contact saved...'        
+    } else {
+        snackbarMessage.value = "Can not save. Invalid contact!"
+    }
+    isSnackbarOpen.value = true;
+}
+
+const setPfp = () => {
+    isPfpSelectOpen.value = false;
+    if (contact && contact.value) {
+        contact.value.photo = pfpUrl.value;
+        pfpUrl.value = "";
     }
 }
-const all = useContacts();
-const contact = ref(all.value.find(x => x.id == id.value)!);
-const router = useRouter();
 
-const valid = ref(false);
-const removeEffect = router.beforeEach(() => {
+
+const removeGuard = router.beforeEach(() => {
     if (!validateContact(contact.value)) {
         isDialogOpen.value = true;
         return false;
     }
-    return true;
 })
 
-watchEffect(() => {
-    if (deleteAndExit.value == true) {
-        console.log('eixt wanted, exiting ...')
-        isDialogOpen.value = false;
-        removeEffect();
-        deleteContact(contact.value.id);
-        router.replace('/');
+const stopAutoSave = watchEffect(() => {
+    if (process.client) {
+        updateContact(contact.value);
     }
 })
 
-onUnmounted(() => {
-    console.log('removing route hook');
-    removeEffect()
-})
 </script>
 
 <style>
-.x {
-    background-color: red;
-}
 </style>

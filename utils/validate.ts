@@ -1,6 +1,10 @@
 import { Tcontact } from "~/types";
 
-const validateContact = (contact: Tcontact) => {
+const validateContact = (contact: Tcontact | null) => {
+    if (!contact) {
+        return false;
+    }
+
     if (!contact.firstName.trim() && !contact.lastName.trim()) {
         return false;
     };
@@ -15,6 +19,7 @@ const validateContact = (contact: Tcontact) => {
 const deleteContact = (id: number) => {
     const contacts = useContacts();
     contacts.value = contacts.value.filter(contact => contact.id != id);
+    localStorage.setItem('contacts', JSON.stringify(contacts.value))
 }
 
 export  {validateContact, deleteContact};

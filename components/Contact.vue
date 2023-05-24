@@ -22,12 +22,12 @@
                 <v-chip @click.stop class="mx-1" size="small" v-for="tag in tags">{{ tag }}</v-chip>
             </v-row>
         </v-container>
-        <v-divider vertical />
         <v-btn
-            color="grey-lighten-1"
-            icon="mdi-dots-vertical"
-            variant="text"
+            color="green-darken-2"
+            icon="mdi-phone"
+            variant="tonal"
             @click.stop
+            :href="'tel:' + number"
         >
         </v-btn>
     </template>

@@ -36,7 +36,9 @@ const newContactId = ref(0);
 
 const createContact = () => {
     const router = useRouter()
-    const id = contacts.value[contacts.value.length - 1].id + 1;
+    const newId = useId();
+    newId.value++;
+    const id = newId.value;
     const newContact = {
         id: id,
         firstName: "",
@@ -51,5 +53,18 @@ const createContact = () => {
     newContactId.value = id;
     router.push('/contacts/' + id);
 }
+
+watchEffect(() => {
+    if (process.client) {
+        if (!contacts.value || contacts.value.length == 0) {
+            contacts.value = getContacts();
+        }
+        setContacts(contacts.value);
+    }
+})
+
+onBeforeMount(() => {
+    contacts.value = getContacts();
+})
 
 </script>

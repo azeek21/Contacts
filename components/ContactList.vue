@@ -1,23 +1,23 @@
 <template>
   <div>
-    <v-app-bar
-      app
-      scroll-behavior="hide"
+    <v-toolbar
+      color="#212121"
       density="compact"
-      scroll-threshold="20"
-      location="top"
+      :elevation="8"
+      class="rounded-pill mx-auto mb-3 mt-1"
+      style="width: max-content; min-width: 50%; max-width: 90%"
     >
       <v-chip-group
         v-model="selectedTags"
-        class="px-10"
+        class="px-3 justify-center w-100"
         multiple
         selected-class="text-secondary"
       >
-        <v-chip v-for="tag in tags" :key="tag">
+        <v-chip v-for="tag in tags" :key="tag" class="mx-1">
           {{ tag }}
         </v-chip>
       </v-chip-group>
-    </v-app-bar>
+    </v-toolbar>
 
     <v-list lines="two">
       <template v-for="contact in filteredContacts" :key="contact.id">
@@ -38,11 +38,12 @@
 
 <script setup lang="ts">
 const contacts = useContacts();
-const filteredContacts = ref(sortedContacts(contacts.value));
 const tags = useTags();
-const selectedTags = ref<number[]>([]);
-
-watchEffect(() => {
-  console.log("render changed 5: ");
+const selectedTags = useSelectedTags();
+const filteredContacts = computed(() => {
+  console.log("CONTACTLIST: computed...");
+  return sortedContacts(filterByTags(contacts.value));
 });
+
+console.log("contactlist ..123...aaaa33.   aaa   aaa");
 </script>

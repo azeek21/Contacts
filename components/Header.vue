@@ -1,10 +1,9 @@
 <template>
   <v-app-bar app scroll-behavior="elevate">
-    <v-app-bar-nav-icon icon="mdi-menu" @click="changeDrawer" />
-
+    <v-btn icon="mdi-menu" @click="changeDrawer"> </v-btn>
     <v-text-field
       v-model="searchText"
-      label="Search"
+      label="Search contacts"
       hide-details
       density="compact"
       single-line
@@ -12,20 +11,19 @@
       append-inner-icon="mdi-magnify"
       color="green"
     />
-
-    <template #append>
-      <v-btn
-        class="mx-2"
-        prepend-icon="mdi-wrench"
-        title="Load demo data"
-        color="yellow"
-        variant="elevated"
-        @click="demoModeHandler"
-        >Demo</v-btn
-      >
-      <v-btn icon="mdi-dots-vertical"></v-btn>
-    </template>
+    <v-btn
+      class="mx-2"
+      prepend-icon="mdi-wrench"
+      title="Load demo data"
+      color="yellow"
+      variant="elevated"
+      @click="demoModeHandler"
+      >Demo
+    </v-btn>
+    <v-btn icon="mdi-dots-vertical"></v-btn>
   </v-app-bar>
+
+  <!-- <v-toolbar title="Hii"> </v-toolbar> -->
 
   <v-dialog v-model="isDialogOpen" persistent width="auto">
     <v-card
@@ -61,7 +59,6 @@ const searchText = ref("");
 const drawer = useDrawer();
 const changeDrawer = () => (drawer.value = !drawer.value);
 const isDialogOpen = ref(false);
-
 const demoModeHandler = () => {
   const contacts = useContacts();
   if (contacts && contacts.value && contacts.value.length > 0) {

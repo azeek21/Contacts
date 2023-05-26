@@ -9,7 +9,11 @@ const getContacts = () => {
   return contacts;
 };
 
-const setContacts = (contacts: Tcontact[]) => {
+const setContacts = (contacts: Tcontact[] | null) => {
+  if (!contacts) {
+    return;
+  }
+
   localStorage.setItem("contacts", JSON.stringify(contacts));
 };
 
@@ -28,12 +32,18 @@ const updateContact = (contact: Tcontact | null) => {
   if (!contact) {
     return;
   }
+
   const all = useContacts();
-  all.value = [...all.value.filter((c) => c.id !== contact.id), contact];
-  setContacts(all.value);
+
+  if (!all.value) {
+    return;
+  }
+
+  setContacts([...all.value.filter((c) => c.id !== contact.id), contact]);
 };
 
 const loadDemoData = () => {
+  console.log("updating contacts");
   const contacts = useContacts();
   contacts.value = demoContacts;
   localStorage.setItem("contacts", JSON.stringify(demoContacts));
@@ -102,10 +112,23 @@ const demoContacts: Tcontact[] = [
     tags: ["singer"],
     selected: false,
   },
+  {
+    id: 7,
+    firstName: "You",
+    lastName: "Tester",
+    email: "example@example.com",
+    photo: "",
+    number: "+123456789",
+    tags: ["tester"],
+    selected: false,
+  },
 ];
 
-const sortedContacts = (contacts: Tcontact[]) => {
-  contacts = contacts.sort((c1, c2) => {
+const sortedContacts = (contacts: Tcontact[] | null) => {
+  if (!contacts) {
+    return null;
+  }
+  const sortedContacts = [...contacts].sort((c1, c2) => {
     const n1 = c1.firstName + c1.lastName;
     const n2 = c2.firstName + c2.lastName;
     if (n1 > n2) {
@@ -115,18 +138,29 @@ const sortedContacts = (contacts: Tcontact[]) => {
     }
     return 0;
   });
-  return contacts;
+
+  return sortedContacts;
 };
 
-const filterByTags = (contacts: Tcontact[], tags: string[]) => {
-  return contacts.filter((contact) => {
-    for (const tag in tags) {
-      if (contact.tags.includes(tag)) {
+const filterByTags = (contacts: Tcontact[] | null) => {
+  if (!contacts) {
+    return null;
+  }
+  const selectedTagsIndexes = useSelectedTags();
+  if (selectedTagsIndexes.value.length === 0) {
+    return contacts;
+  }
+  const tags = useTags();
+  const filterWith = selectedTagsIndexes.value.map((i) => tags.value[i]);
+  const filteredContacts = contacts.filter((contact) => {
+    for (let i = 0; i < filterWith.length; i++) {
+      if (contact.tags.includes(filterWith[i])) {
         return true;
       }
     }
     return false;
   });
+  return filteredContacts;
 };
 
 export {

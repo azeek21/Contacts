@@ -154,10 +154,16 @@ const isSnackbarOpen = ref(false);
 const snackbarMessage = ref("Hii");
 const isPfpSelectOpen = ref(false);
 const pfpUrl = ref("");
+const allTags = useTags();
 
 onBeforeMount(() => {
   console.log("before mount ...");
   contact.value = getContact(id);
+  if (!contact.value) {
+    removeGuard();
+    stopAutoSave();
+    router.replace("/");
+  }
 });
 
 const deleteAndExit = () => {
@@ -184,11 +190,11 @@ const saveContact = () => {
 };
 
 const setPfp = () => {
-  isPfpSelectOpen.value = false;
   if (contact && contact.value) {
     contact.value.photo = pfpUrl.value;
     pfpUrl.value = "";
   }
+  isPfpSelectOpen.value = false;
 };
 
 const removeGuard = router.beforeEach(() => {
@@ -197,11 +203,9 @@ const removeGuard = router.beforeEach(() => {
     return false;
   }
 });
-
+console.log("id.vue");
 const stopAutoSave = watchEffect(() => {
-  if (process.client) {
-    updateContact(contact.value);
-  }
+  updateContact(contact.value);
 });
 </script>
 

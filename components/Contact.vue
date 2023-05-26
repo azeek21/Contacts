@@ -16,9 +16,14 @@
     <template #append>
       <v-container class="">
         <v-row style="max-width: 200px">
-          <v-chip v-for="tag in tags" class="mx-1" size="small" @click.stop>{{
-            tag
-          }}</v-chip>
+          <v-chip
+            v-for="(tag, index) in tags"
+            :key="index"
+            class="mx-1"
+            size="small"
+            @click.stop
+            >{{ tag }}</v-chip
+          >
         </v-row>
       </v-container>
       <v-btn
@@ -34,8 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { Tcontact } from "~/types";
-
+console.log("contact list item");
 const props = defineProps({
   firstName: String,
   lastName: String,

@@ -18,8 +18,12 @@ const validateContact = (contact: Tcontact | null) => {
 
 const deleteContact = (id: number) => {
   const contacts = useContacts();
-  contacts.value = contacts.value.filter((contact) => contact.id != id);
-  localStorage.setItem("contacts", JSON.stringify(contacts.value));
+  if (!contacts.value) {
+    return;
+  }
+
+  contacts.value = contacts.value.filter((contact) => contact.id !== id);
+  setContacts(contacts.value);
 };
 
 export { validateContact, deleteContact };

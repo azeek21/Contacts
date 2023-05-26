@@ -1,19 +1,21 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
-import { createResolver } from '@nuxt/kit'
+import { createResolver } from "@nuxt/kit";
 import vuetify from "vite-plugin-vuetify";
 
-
-const { resolve } = createResolver(import.meta.url)
+const { resolve } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
-  css: ['vuetify/lib/styles/main.sass', '@mdi/font/css/materialdesignicons.min.css'],
+  css: [
+    "vuetify/lib/styles/main.sass",
+    "@mdi/font/css/materialdesignicons.min.css",
+  ],
   build: {
-    transpile: ['vuetify'],
+    transpile: ["vuetify"],
   },
   vite: {
     define: {
-      'process.env.DEBUG': false,
+      "process.env.DEBUG": false,
     },
   },
-  ssr: false, 
-})
+  ssr: false,
+});

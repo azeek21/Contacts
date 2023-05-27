@@ -36,3 +36,5 @@ export const useSelectedTags = () =>
   useState<number[]>("selectedTags", () => {
     return [];
   });
+
+export const useSearchText = () => useState("searchText", () => "");

@@ -55,10 +55,11 @@
 </template>
 
 <script setup lang="ts">
-const searchText = ref("");
 const drawer = useDrawer();
 const changeDrawer = () => (drawer.value = !drawer.value);
 const isDialogOpen = ref(false);
+const searchText = useSearchText();
+
 const demoModeHandler = () => {
   const contacts = useContacts();
   if (contacts && contacts.value && contacts.value.length > 0) {

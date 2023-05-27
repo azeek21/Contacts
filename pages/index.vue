@@ -65,14 +65,11 @@ const createContact = () => {
 };
 
 watchEffect(() => {
-  console.log("INDEX: watchEffect");
   if (contacts && contacts.value && contacts.value.length > 0) {
     setContacts(contacts.value);
   }
 });
-console.log("index...");
 onBeforeMount(() => {
-  console.log("INDEX: onBeforeMount ");
   contacts.value = getContacts();
 });
 </script>

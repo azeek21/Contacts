@@ -21,5 +21,4 @@
 
 <script setup>
 const drawer = useDrawer();
-console.log("navigation...");
 </script>

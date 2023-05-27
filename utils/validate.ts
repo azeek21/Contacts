@@ -26,4 +26,15 @@ const deleteContact = (id: number) => {
   setContacts(contacts.value);
 };
 
-export { validateContact, deleteContact };
+const search = (source: string, term: string) => {
+  if (!term || term.length < 2) {
+    return source;
+  }
+
+  if (!source.includes(term)) {
+    return source;
+  }
+  return source.replaceAll(term, `<span class='red'>${term}</span>`);
+};
+
+export { validateContact, deleteContact, search };

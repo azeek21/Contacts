@@ -5,7 +5,7 @@
       density="compact"
       :elevation="8"
       class="rounded-pill mx-auto mb-3 mt-1"
-      style="width: max-content; min-width: 50%; max-width: 90%"
+      style="width: max-content; min-width: 50%; max-width: 95%"
     >
       <v-chip-group
         v-model="selectedTags"
@@ -13,7 +13,7 @@
         multiple
         selected-class="text-secondary"
       >
-        <v-chip v-for="tag in tags" :key="tag" class="mx-1">
+        <v-chip v-for="tag in tags" :key="tag" size="small" class="mx-1">
           {{ tag }}
         </v-chip>
       </v-chip-group>
@@ -41,9 +41,6 @@ const contacts = useContacts();
 const tags = useTags();
 const selectedTags = useSelectedTags();
 const filteredContacts = computed(() => {
-  console.log("CONTACTLIST: computed...");
   return sortedContacts(filterByTags(contacts.value));
 });
-
-console.log("contactlist ..123...aaaa33.   aaa   aaa");
 </script>

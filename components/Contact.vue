@@ -1,5 +1,5 @@
 <template>
-  <v-list-item :value="id" variant="elevated">
+  <v-list-item v-if="ced.visible" :value="id" variant="elevated">
     <template #prepend>
       <v-avatar color="green" :image="photo">
         {{ firstName![0] }} {{ lastName![0] }}
@@ -7,9 +7,10 @@
     </template>
 
     <NuxtLink :to="'/contacts/' + id">
-      <v-list-item-title> {{ firstName }} {{ lastName }} </v-list-item-title>
-      <v-list-item-subtitle>
-        {{ number }}
+      <v-list-item-title v-html="`${ced.fn} ${ced.ln}`"></v-list-item-title>
+      <v-list-item-subtitle
+        v-html="`${ced.num} ${ced.email ? ' - ' : ''} ${ced.email}`"
+      >
       </v-list-item-subtitle>
     </NuxtLink>
 
@@ -17,13 +18,15 @@
       <v-container class="">
         <v-row style="max-width: 200px">
           <v-chip
-            v-for="(tag, index) in tags"
+            v-for="(tag, index) in ced.tags"
             :key="index"
+            variant="outlined"
             class="mx-1"
+            color="gray"
             size="small"
             @click.stop
-            >{{ tag }}</v-chip
-          >
+            v-html="tag"
+          ></v-chip>
         </v-row>
       </v-container>
       <v-btn
@@ -39,7 +42,6 @@
 </template>
 
 <script setup lang="ts">
-console.log("contact list item");
 const props = defineProps({
   firstName: String,
   lastName: String,
@@ -50,11 +52,37 @@ const props = defineProps({
   tags: Array<String>,
   email: String,
 });
+const searchText = useSearchText();
+
+const ced = computed(() => {
+  const res = { ln: "", fn: "", num: "", email: "", visible: true, tags: [] };
+  res.ln = search(props.lastName!, searchText.value);
+  res.fn = search(props.firstName!, searchText.value);
+  res.num = search(props.number!, searchText.value);
+  res.email = search(props.email!, searchText.value);
+  res.tags = props.tags?.map((tag) => search(tag, searchText.value));
+  if (searchText.value.length <= 2) {
+    res.visible = true;
+  } else if (
+    !props.firstName?.includes(searchText.value) &&
+    !props.lastName?.includes(searchText.value) &&
+    !props.number?.includes(searchText.value) &&
+    !props.tags?.some((tag) => tag.includes(searchText.value)) &&
+    !props.email?.includes(searchText.value)
+  ) {
+    res.visible = false;
+  }
+  return res;
+});
 </script>
 
 <style>
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.red {
+  color: red;
 }
 </style>

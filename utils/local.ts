@@ -43,7 +43,6 @@ const updateContact = (contact: Tcontact | null) => {
 };
 
 const loadDemoData = () => {
-  console.log("updating contacts");
   const contacts = useContacts();
   contacts.value = demoContacts;
   localStorage.setItem("contacts", JSON.stringify(demoContacts));

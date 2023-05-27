@@ -148,7 +148,6 @@ const router = useRouter();
 const route = useRoute();
 const id = Number(route.params.id!);
 const contact = ref<Tcontact | null>(null);
-console.log("contact: ", contact.value);
 const isDialogOpen = ref(false);
 const isSnackbarOpen = ref(false);
 const snackbarMessage = ref("Hii");
@@ -157,7 +156,6 @@ const pfpUrl = ref("");
 const allTags = useTags();
 
 onBeforeMount(() => {
-  console.log("before mount ...");
   contact.value = getContact(id);
   if (!contact.value) {
     removeGuard();
@@ -203,7 +201,6 @@ const removeGuard = router.beforeEach(() => {
     return false;
   }
 });
-console.log("id.vue");
 const stopAutoSave = watchEffect(() => {
   updateContact(contact.value);
 });

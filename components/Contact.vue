@@ -24,7 +24,13 @@
             class="mx-1"
             color="gray"
             size="small"
-            @click.stop
+            @click.stop="
+              () => {
+                if (!searchText) {
+                  searchText = tag;
+                }
+              }
+            "
             v-html="tag"
           ></v-chip>
         </v-row>

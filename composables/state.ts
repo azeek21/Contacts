@@ -29,6 +29,7 @@ export const useTags = () =>
       "friends",
       "singer",
       "tester",
+      "брат",
     ];
   });
 

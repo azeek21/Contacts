@@ -4,9 +4,17 @@
 
     <v-navigation-drawer v-model="drawer" temporary>
       <v-list>
-        <v-list-item title="Item" prepend-icon="mdi-home" value="x" />
-        <v-list-item title="Item2" prepend-icon="mdi-car" value="y" />
-        <v-list-item title="Item2" prepend-icon="mdi-baby" value="z" />
+        <v-list-item
+          title="Скоро..."
+          prepend-icon="mdi-information"
+          value="x"
+        />
+        <v-list-item
+          title="Импортировать"
+          prepend-icon="mdi-import"
+          value="y"
+        />
+        <v-list-item title="Экспорт" prepend-icon="mdi-export" value="z" />
       </v-list>
     </v-navigation-drawer>
 

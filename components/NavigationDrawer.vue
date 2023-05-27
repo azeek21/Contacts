@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer v-model="drawer" temporary>
     <v-list density="compact">
-      <v-list-subheader>Contacts</v-list-subheader>
+      <v-list-subheader>Контакты</v-list-subheader>
       <v-list-item
         active-color="primary"
         value="import"

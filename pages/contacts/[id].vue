@@ -29,10 +29,10 @@
               <v-card class="pa-10" variant="elevated">
                 <v-text-field
                   v-model="pfpUrl"
-                  label="Picture Url"
+                  label="URL на изображения"
                   type="url"
-                  placeholder="Only urls supported for now"
-                  hint="Desn't support file uploads yet. Plase paste image url"
+                  placeholder="Поддерживаются только URL"
+                  hint="Не поддерживает загрузку файлов. Пожалуйста, вставьте URL изображения"
                 >
                 </v-text-field>
                 <v-card-actions>
@@ -41,7 +41,7 @@
                     variant="outlined"
                     @click="isPfpSelectOpen = false"
                   >
-                    Cancel
+                    Отмена
                   </v-btn>
                   <v-btn
                     class=""
@@ -49,7 +49,7 @@
                     variant="outlined"
                     @click="setPfp"
                   >
-                    Save
+                    Сохранить
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -59,18 +59,18 @@
 
         <v-text-field
           v-model="contact.firstName"
-          label="First name"
+          label="Имя"
           prepend-inner-icon="mdi-account"
         />
 
         <v-text-field
           v-model="contact.lastName"
-          label="Last Name"
+          label="Фамилия"
           prepend-inner-icon="mdi-account"
         />
         <v-text-field
           v-model="contact.number"
-          label="Phone Number"
+          label="Номер"
           prepend-inner-icon="mdi-phone"
         />
         <v-text-field
@@ -79,14 +79,14 @@
           aria-required="true"
           validate-on="blur"
           :rules="[]"
-          label="Email"
+          label=" Почта"
           prepend-inner-icon="mdi-email"
         />
 
         <v-combobox
           v-model="contact.tags"
           :items="allTags"
-          label="Tags"
+          label="Теги"
           multiple
           variant="outlined"
           chips
@@ -99,7 +99,7 @@
                 <template #prepend>
                   <v-icon color="red"> mdi-delete </v-icon>
                 </template>
-                Delete
+                Удалить
               </v-btn>
             </v-col>
             <v-col>
@@ -109,7 +109,7 @@
                 prepend-icon="mdi-content-save"
                 @click="saveContact"
               >
-                Save
+                Сохранить
               </v-btn>
             </v-col>
           </v-row>
@@ -119,18 +119,18 @@
 
     <v-dialog v-model="isDialogOpen" persistent width="auto">
       <v-card
-        title="Opsie wupsie..."
-        text="You have not provided minimal inormation to create new contact. If you go back this contact will be deleted..."
+        title="Упс..."
+        text="Вы не предоставили минимальную информацию для создания нового контакта. Если вы вернетесь, этот контакт будет удален..."
       >
         <v-card-actions>
           <v-spacer></v-spacer>
 
           <v-btn variant="text" color="red" @click="deleteAndExit">
-            Delete and exit
+            Удалить и выйти
           </v-btn>
 
           <v-btn variant="text" color="green" @click="isDialogOpen = false">
-            Contineu Editing
+            Продолжить редактирование
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -165,7 +165,7 @@ onBeforeMount(() => {
 });
 
 const deleteAndExit = () => {
-  snackbarMessage.value = "Contact deleted, leaving ...";
+  snackbarMessage.value = "Контакт удален...";
   isSnackbarOpen.value = true;
   removeGuard();
   stopAutoSave();
@@ -180,9 +180,9 @@ const deleteAndExit = () => {
 const saveContact = () => {
   if (validateContact(contact.value)) {
     updateContact(contact.value);
-    snackbarMessage.value = "Contact saved...";
+    snackbarMessage.value = "Контакт сохранен...";
   } else {
-    snackbarMessage.value = "Can not save. Invalid contact!";
+    snackbarMessage.value = "Не могу сохранить. Неверный контакт.!";
   }
   isSnackbarOpen.value = true;
 };

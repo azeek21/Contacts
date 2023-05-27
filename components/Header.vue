@@ -3,7 +3,7 @@
     <v-btn icon="mdi-menu" @click="changeDrawer"> </v-btn>
     <v-text-field
       v-model="searchText"
-      label="Search contacts"
+      label="Поиск контактов..."
       hide-details
       density="compact"
       single-line
@@ -14,11 +14,11 @@
     <v-btn
       class="mx-2"
       prepend-icon="mdi-wrench"
-      title="Load demo data"
+      title="Загрузить демонстрационные данные"
       color="yellow"
       variant="elevated"
       @click="demoModeHandler"
-      >Demo
+      >Демо
     </v-btn>
     <v-btn icon="mdi-dots-vertical"></v-btn>
   </v-app-bar>
@@ -27,8 +27,8 @@
 
   <v-dialog v-model="isDialogOpen" persistent width="auto">
     <v-card
-      title="Warning !"
-      text="You have older contacts, If you switch to Demo mode, your old contacts will be deleted forever. Do you want to proceed ?"
+      title="Предупреждение !"
+      text="У вас есть старые контакты. Если вы переключитесь в демонстрационный режим, ваши старые контакты будут удалены навсегда. Продолжить ?"
     >
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -43,11 +43,11 @@
             }
           "
         >
-          Load Demo data
+          Переключит
         </v-btn>
 
         <v-btn variant="outlined" color="green" @click="isDialogOpen = false">
-          Cancel
+          Отмена
         </v-btn>
       </v-card-actions>
     </v-card>

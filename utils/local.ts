@@ -205,15 +205,16 @@ const filterByTags = (contacts: Tcontact[] | null) => {
   if (!contacts) {
     return null;
   }
-  const selectedTagsIndexes = useSelectedTags();
-  if (selectedTagsIndexes.value.length === 0) {
+
+  const selectedTags = useSelectedTags();
+
+  if (selectedTags.value.length === 0) {
     return contacts;
   }
-  const tags = useTags();
-  const filterWith = selectedTagsIndexes.value.map((i) => tags.value[i]);
+
   const filteredContacts = contacts.filter((contact) => {
-    for (let i = 0; i < filterWith.length; i++) {
-      if (contact.tags.includes(filterWith[i])) {
+    for (let i = 0; i < selectedTags.value.length; i++) {
+      if (contact.tags.includes(selectedTags.value[i])) {
         return true;
       }
     }

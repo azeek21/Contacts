@@ -34,7 +34,7 @@ export const useTags = () =>
   });
 
 export const useSelectedTags = () =>
-  useState<number[]>("selectedTags", () => {
+  useState<string[]>("selectedTags", () => {
     return [];
   });
 

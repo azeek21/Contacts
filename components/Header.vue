@@ -4,13 +4,15 @@
     <v-text-field
       v-model="searchText"
       :label="$t('search')"
+      style="min-width: 150px"
       hide-details
       density="compact"
       single-line
       variant="outlined"
-      append-inner-icon="mdi-magnify"
       color="green"
-    />
+      prepend-inner-icon="mdi-magnify"
+    >
+    </v-text-field>
 
     <v-form class="mx-2">
       <v-select
@@ -31,6 +33,7 @@
       :title="$t('demoTitle')"
       color="yellow"
       variant="elevated"
+      :loading="isDialogOpen"
       @click="demoModeHandler"
     >
       {{ $t("demo") }}

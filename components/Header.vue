@@ -3,7 +3,7 @@
     <v-btn icon="mdi-menu" @click="changeDrawer"> </v-btn>
     <v-text-field
       v-model="searchText"
-      label="Поиск контактов..."
+      :label="$t('search')"
       hide-details
       density="compact"
       single-line
@@ -11,25 +11,36 @@
       append-inner-icon="mdi-magnify"
       color="green"
     />
+
+    <v-form class="mx-2">
+      <v-select
+        v-model="locale"
+        :label="$t('language')"
+        prepend-inner-icon="mdi-translate"
+        :items="['en', 'ru', 'uz']"
+        variant="solo"
+        hide-details
+        single-line
+        density="compact"
+      ></v-select>
+    </v-form>
+
     <v-btn
       class="mx-2"
       prepend-icon="mdi-wrench"
-      title="Загрузить демонстрационные данные"
+      :title="$t('demoTitle')"
       color="yellow"
       variant="elevated"
       @click="demoModeHandler"
-      >Демо
+    >
+      {{ $t("demo") }}
     </v-btn>
-    <v-btn icon="mdi-dots-vertical"></v-btn>
   </v-app-bar>
 
   <!-- <v-toolbar title="Hii"> </v-toolbar> -->
 
   <v-dialog v-model="isDialogOpen" persistent width="auto">
-    <v-card
-      title="Предупреждение !"
-      text="У вас есть старые контакты. Если вы переключитесь в демонстрационный режим, ваши старые контакты будут удалены навсегда. Продолжить ?"
-    >
+    <v-card :title="$t('warning')" :text="$t('demoMessage')">
       <v-card-actions>
         <v-spacer></v-spacer>
 
@@ -43,11 +54,11 @@
             }
           "
         >
-          Переключит
+          {{ $t("switch") }}
         </v-btn>
 
         <v-btn variant="outlined" color="green" @click="isDialogOpen = false">
-          Отмена
+          {{ $t("cancel") }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -55,11 +66,13 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+
 const drawer = useDrawer();
 const changeDrawer = () => (drawer.value = !drawer.value);
 const isDialogOpen = ref(false);
 const searchText = useSearchText();
-
+const { locale } = useI18n();
 const demoModeHandler = () => {
   const contacts = useContacts();
   if (contacts && contacts.value && contacts.value.length > 0) {
@@ -68,4 +81,8 @@ const demoModeHandler = () => {
     loadDemoData();
   }
 };
+
+watch(locale, () => {
+  localStorage.setItem("locale", locale.value);
+});
 </script>

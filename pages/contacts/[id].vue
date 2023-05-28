@@ -29,10 +29,10 @@
               <v-card class="pa-10" variant="elevated">
                 <v-text-field
                   v-model="pfpUrl"
-                  label="URL на изображения"
+                  :label="$t('img-select-label')"
                   type="url"
-                  placeholder="Поддерживаются только URL"
-                  hint="Не поддерживает загрузку файлов. Пожалуйста, вставьте URL изображения"
+                  :placeholder="$t('img-select-placeholder')"
+                  :hint="$t('img-select-hint')"
                 >
                 </v-text-field>
                 <v-card-actions>
@@ -41,7 +41,7 @@
                     variant="outlined"
                     @click="isPfpSelectOpen = false"
                   >
-                    Отмена
+                    {{ $t("cancel") }}
                   </v-btn>
                   <v-btn
                     class=""
@@ -49,7 +49,7 @@
                     variant="outlined"
                     @click="setPfp"
                   >
-                    Сохранить
+                    {{ $t("save") }}
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -59,18 +59,18 @@
 
         <v-text-field
           v-model="contact.firstName"
-          label="Имя"
+          :label="$t('first-name')"
           prepend-inner-icon="mdi-account"
         />
 
         <v-text-field
           v-model="contact.lastName"
-          label="Фамилия"
+          :label="$t('last-name')"
           prepend-inner-icon="mdi-account"
         />
         <v-text-field
           v-model="contact.number"
-          label="Номер"
+          :label="$t('number')"
           prepend-inner-icon="mdi-phone"
         />
         <v-text-field
@@ -79,14 +79,14 @@
           aria-required="true"
           validate-on="blur"
           :rules="[]"
-          label=" Почта"
+          :label="$t('email')"
           prepend-inner-icon="mdi-email"
         />
 
         <v-combobox
           v-model="contact.tags"
           :items="allTags"
-          label="Теги"
+          :label="$t('tags')"
           multiple
           variant="outlined"
           chips
@@ -99,7 +99,7 @@
                 <template #prepend>
                   <v-icon color="red"> mdi-delete </v-icon>
                 </template>
-                Удалить
+                {{ $t("delete") }}
               </v-btn>
             </v-col>
             <v-col>
@@ -109,7 +109,7 @@
                 prepend-icon="mdi-content-save"
                 @click="saveContact"
               >
-                Сохранить
+                {{ $t("save") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -118,19 +118,16 @@
     </client-only>
 
     <v-dialog v-model="isDialogOpen" persistent width="auto">
-      <v-card
-        title="Упс..."
-        text="Вы не предоставили минимальную информацию для создания нового контакта. Если вы вернетесь, этот контакт будет удален..."
-      >
+      <v-card :title="$t('oops')" :text="$t('no-enough-data-to-save')">
         <v-card-actions>
           <v-spacer></v-spacer>
 
           <v-btn variant="text" color="red" @click="deleteAndExit">
-            Удалить и выйти
+            {{ $t("delete-exit") }}
           </v-btn>
 
           <v-btn variant="text" color="green" @click="isDialogOpen = false">
-            Продолжить редактирование
+            {{ $t("continue-editing") }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -142,6 +139,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { VSkeletonLoader } from "vuetify/lib/labs/components.mjs";
 import { Tcontact } from "~/types";
 const router = useRouter();
@@ -154,6 +152,7 @@ const snackbarMessage = ref("Hii");
 const isPfpSelectOpen = ref(false);
 const pfpUrl = ref("");
 const allTags = useTags();
+const { t } = useI18n();
 
 onBeforeMount(() => {
   contact.value = getContact(id);
@@ -165,7 +164,7 @@ onBeforeMount(() => {
 });
 
 const deleteAndExit = () => {
-  snackbarMessage.value = "Контакт удален...";
+  snackbarMessage.value = t("contact-deleted");
   isSnackbarOpen.value = true;
   removeGuard();
   stopAutoSave();
@@ -180,9 +179,9 @@ const deleteAndExit = () => {
 const saveContact = () => {
   if (validateContact(contact.value)) {
     updateContact(contact.value);
-    snackbarMessage.value = "Контакт сохранен...";
+    snackbarMessage.value = t("contact-saved");
   } else {
-    snackbarMessage.value = "Не могу сохранить. Неверный контакт.!";
+    snackbarMessage.value = t("save-error");
   }
   isSnackbarOpen.value = true;
 };

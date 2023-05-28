@@ -39,6 +39,7 @@
         color="green-darken-2"
         icon="mdi-phone"
         variant="tonal"
+        :title="$t('call')"
         :href="'tel:' + number"
         @click.stop
       >

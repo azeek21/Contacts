@@ -151,6 +151,36 @@ const demoContacts: Tcontact[] = [
     tags: ["tester", "брат"],
     selected: false,
   },
+  {
+    id: 11,
+    firstName: "Akam",
+    lastName: "",
+    email: "akam@rassiyada.ru",
+    photo: "",
+    number: "+7123456789",
+    tags: ["брат"],
+    selected: false,
+  },
+  {
+    id: 12,
+    firstName: "Jaloldin",
+    lastName: "",
+    email: "jaloldin@kazanda.ru",
+    photo: "",
+    number: "+7242342342342",
+    tags: ["friends"],
+    selected: false,
+  },
+  {
+    id: 13,
+    firstName: "Sultonali",
+    lastName: "Nabijonov",
+    email: "facepalm@master.ru",
+    photo: "",
+    number: "+12334567",
+    tags: ["family", "friends", "брат"],
+    selected: false,
+  },
 ];
 
 const sortedContacts = (contacts: Tcontact[] | null) => {

@@ -5,16 +5,20 @@
     <v-navigation-drawer v-model="drawer" temporary>
       <v-list>
         <v-list-item
-          title="Скоро..."
+          :title="$t('soon')"
           prepend-icon="mdi-information"
           value="x"
         />
         <v-list-item
-          title="Импортировать"
+          :title="$t('import')"
           prepend-icon="mdi-import"
           value="y"
         />
-        <v-list-item title="Экспорт" prepend-icon="mdi-export" value="z" />
+        <v-list-item
+          :title="$t('export')"
+          prepend-icon="mdi-export"
+          value="z"
+        />
       </v-list>
     </v-navigation-drawer>
 
@@ -34,6 +38,7 @@
         color="secondary"
         size="x-large"
         style="pointer-events: all"
+        :title="'Create contact'"
         @click="createContact"
       />
     </v-layout-item>

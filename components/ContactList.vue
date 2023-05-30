@@ -17,15 +17,15 @@
         <v-slide-group-item
           v-for="n in tags"
           :key="n"
-          :value="n"
           v-slot="{ toggle, selectedClass }"
+          :value="n"
         >
           <v-chip
             :class="['mx-1', selectedClass]"
             height="200"
             width="100"
-            @click="toggle"
             size="small"
+            @click="toggle"
           >
             {{ n }}
           </v-chip>

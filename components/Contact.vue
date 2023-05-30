@@ -62,23 +62,34 @@ const props = defineProps({
 const searchText = useSearchText();
 
 const ced = computed(() => {
-  const res = { ln: "", fn: "", num: "", email: "", visible: true, tags: [] };
+  const searchTerm = searchText.value;
+  const res = {
+    ln: "",
+    fn: "",
+    num: "",
+    email: "",
+    visible: true,
+    tags: ["z"],
+  };
+
   res.ln = search(props.lastName!, searchText.value);
   res.fn = search(props.firstName!, searchText.value);
   res.num = search(props.number!, searchText.value);
   res.email = search(props.email!, searchText.value);
-  res.tags = props.tags?.map((tag) => search(tag, searchText.value));
-  if (searchText.value.length <= 2) {
+  res.tags = props.tags!.map((tag) => search(tag, searchText.value));
+
+  if (searchTerm.length < 2) {
     res.visible = true;
-  } else if (
-    !props.firstName?.includes(searchText.value) &&
-    !props.lastName?.includes(searchText.value) &&
-    !props.number?.includes(searchText.value) &&
-    !props.tags?.some((tag) => tag.includes(searchText.value)) &&
-    !props.email?.includes(searchText.value)
-  ) {
-    res.visible = false;
+    return res;
   }
+
+  res.visible =
+    insensitiveIncludes(props.firstName!, searchTerm) ||
+    insensitiveIncludes(props.lastName!, searchTerm) ||
+    insensitiveIncludes(props.number!, searchTerm) ||
+    insensitiveIncludes(props.email!, searchTerm) ||
+    props.tags!.some((tag) => insensitiveIncludes(tag, searchTerm)) ||
+    false;
   return res;
 });
 </script>

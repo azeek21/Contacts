@@ -26,15 +26,24 @@ const deleteContact = (id: number) => {
   setContacts(contacts.value);
 };
 
-const search = (source: string, term: string) => {
-  if (!term || term.length < 2) {
+const search = (source: string, searchTerm: string) => {
+  if (!searchTerm || searchTerm.length < 2) {
     return source;
   }
 
-  if (!source.includes(term)) {
+  const tmp = source.toLocaleLowerCase();
+  const startsAt = tmp.indexOf(searchTerm.toLocaleLowerCase());
+
+  if (startsAt === -1) {
     return source;
   }
-  return source.replaceAll(term, `<span class='red'>${term}</span>`);
+
+  const slice = source.slice(startsAt, startsAt + searchTerm.length);
+  return source.replace(slice, `<span class='red'>${slice}</span>`);
 };
 
-export { validateContact, deleteContact, search };
+const insensitiveIncludes = (src: string, searchTerm: string) => {
+  return src.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
+};
+
+export { validateContact, deleteContact, search, insensitiveIncludes };

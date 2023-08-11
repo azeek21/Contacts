@@ -4,6 +4,15 @@
 
     <v-navigation-drawer v-model="drawer" temporary>
       <v-list>
+        <v-list-item value="a" prepend-icon="mdi-github">
+          <a
+            href="http://github.com/azeek21"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+        </v-list-item>
         <v-list-item
           :title="$t('soon')"
           prepend-icon="mdi-information"
